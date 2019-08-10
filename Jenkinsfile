@@ -56,7 +56,7 @@ node {
 
             // Run helm chart linter
             helmLint(
-                chart_dir     : "${JOB_NAME}/helm",
+                chart_dir     : "/home/jayagopal/.jenkins/workspace/${JOB_NAME}/helm",
                 chart_version : 'development',
                 tag           : 'v1'
             )
