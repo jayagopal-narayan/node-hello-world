@@ -10,7 +10,7 @@ context: service
 image:
   # repository: nginx
   repository: 711317688399.dkr.ecr.us-west-1.amazonaws.com/hello-world
-  tag:
+  tag: "v1"
   # pullPolicy: IfNotPresent
   pullPolicy: Always
 
