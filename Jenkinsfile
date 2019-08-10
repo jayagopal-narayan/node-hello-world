@@ -1,7 +1,8 @@
 @NonCPS
 def helmLint(Map args) {
     // lint helm chart
-    sh "helm lint ${args.chart_dir} --set version=${args.chart_version}, image.tag=${args.tag}"
+    // sh "helm lint ${args.chart_dir} --set version=${args.chart_version}, image.tag=${args.tag}"
+    sh "helm lint helm"
 }
 
 def helmDeploy(Map args) {
