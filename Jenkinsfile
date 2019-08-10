@@ -16,7 +16,7 @@ def helmDeploy(Map args) {
             sh "helm install --dry-run --debug -n ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version} --tiller-namespace=${args.namespace} --namespace=${args.namespace}"
         } else {
             println "Running deployment"
-            sh "helm upgrade --install ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version} --tiller-namespace=${args.namespace} --namespace=${args.namespace}"
+            sh "helm upgrade --install ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version}"
 
             echo "Application ${args.name} successfully deployed. Use helm status ${args.name} to check."
         }
