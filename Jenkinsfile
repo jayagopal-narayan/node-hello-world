@@ -39,18 +39,20 @@ node {
 
         stage ('Build Image') {
 
-            app = docker.build('hello-world', "--build-arg env='development' .")
+            // app = docker.build('hello-world', "--build-arg env='development' .")
         }
 
         stage ('Push Image') {
 
             docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
-                app.push('v1')
+                // app.push('v1')
             }
         }
 
         stage('Deploy image to Integration Environment') {
+
+            sh 'ls -all && pwd'
 
             // Run helm chart linter
             helmLint(
