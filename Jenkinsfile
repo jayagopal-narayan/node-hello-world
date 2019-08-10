@@ -15,7 +15,7 @@ node {
 
         stage ('Push Image') {
 
-            docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'aws-agira-jayagopal') {
+            docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
                 app.push('v1')
             }
