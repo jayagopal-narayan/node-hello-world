@@ -40,14 +40,14 @@ node {
 
         stage ('Build Image') {
 
-            // app = docker.build('hello-world', "--build-arg env='development' .")
+            app = docker.build('hello-world', "--build-arg env='development' .")
         }
 
         stage ('Push Image') {
 
             docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
-                // app.push('v1')
+                app.push('v1')
             }
         }
 
@@ -57,7 +57,7 @@ node {
 
             // Run helm chart linter
             helmLint(
-                chart_dir     : "/home/jayagopal/.jenkins/workspace/${JOB_NAME}/helm",
+                chart_dir     : 'helm',
                 chart_version : 'development',
                 tag           : 'v1'
             )
