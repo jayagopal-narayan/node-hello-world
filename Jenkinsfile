@@ -40,10 +40,16 @@ node {
 
         stage ('Build Image') {
 
+            echo "test build image"
+
             app = docker.build('hello-world', "--build-arg env='development' .")
+
+            echo "test build image done"
         }
 
         stage ('Push Image') {
+
+            echo "test push image"
 
             docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
@@ -75,6 +81,8 @@ node {
     }
 
     catch(exception) {
+
+        echo "test exception"
 
         echo "${exception}"
     }
