@@ -1,8 +1,8 @@
 @NonCPS
 def helmLint(Map args) {
     // lint helm chart
-    sh "helm lint ${args.chart_dir} --set version=${args.chart_version}, image.tag=${args.tag}"
-    // sh "helm lint helm"
+    // sh "helm lint ${args.chart_dir} --set version=${args.chart_version}, image.tag=${args.tag}"
+    sh "helm lint helm-v1 --set image.tag=${args.tag}"
 }
 
 def helmDeploy(Map args) {
@@ -63,7 +63,7 @@ node {
 
             // Run helm chart linter
             helmLint(
-                chart_dir     : '/helm',
+                chart_dir     : 'helm-v1',
                 chart_version : 'development',
                 tag           : 'v1'
             )
@@ -72,7 +72,7 @@ node {
             helmDeploy(
                 dry_run       : false,
                 name          : 'hello-world',
-                chart_dir     : '/helm',
+                chart_dir     : 'helm-v1',
                 tag           : 'v1',
                 version       : 'development',
                 namespace     : 'development'
