@@ -1,36 +1,24 @@
-{{- if .Values.ingress.enabled -}}
-{{- $fullName := include "helm.fullname" . -}}
-apiVersion: extensions/v1beta1
+{{- $ing := dict "Values" .Values "Chart" .Chart "Component" "ingress" }}
+{{- $svc := dict "Values" .Values "Chart" .Chart "Component" "service" }}
 kind: Ingress
+apiVersion: extensions/v1beta1
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "common.name" $ing }}
+  namespace: {{ .Release.Namespace }}
   labels:
-{{ include "helm.labels" . | indent 4 }}
-  {{- with .Values.ingress.annotations }}
+{{ include "common.labels" $ing | indent 4}}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    kubernetes.io/ingress.class: traefik-{{ include "common.ingress-type" . }}
+    traefik.ingress.kubernetes.io/frontend-entry-points: {{ .Values.ingress.entry }}
+{{ if .Values.ingress.annotations }}{{ toYaml .Values.ingress.annotations | indent 4 }}{{ end }}
 spec:
-{{- if .Values.ingress.tls }}
-  tls:
-  {{- range .Values.ingress.tls }}
-    - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
-{{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
+    - http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+{{- $root := . -}}
+{{- range .Values.service.ports }}
+          - path: {{ .context }}
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
-        {{- end }}
-  {{- end }}
-{{- end }}
+                serviceName: {{ include "common.name" (dict "Values" $root.Values "Chart" $root.Chart "Component" "service") }}
+                servicePort: {{ .port }}
+{{- end -}}

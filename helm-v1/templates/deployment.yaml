@@ -1,52 +1,51 @@
-apiVersion: apps/v1
+{{- $dpl := dict "Values" .Values "Chart" .Chart "Component" "deployment" }}
+{{- $repl := dict "Values" .Values "Chart" .Chart "Component" "replica" }}
+{{- $ctr := dict "Values" .Values "Chart" .Chart "Component" "container" }}
 kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: {{ include "helm.fullname" . }}
+  name: {{ include "common.name" $dpl }}
+  namespace: {{ .Release.Namespace }}
   labels:
-{{ include "helm.labels" . | indent 4 }}
+{{ include "common.labels" $dpl | indent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "helm.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "common.labels" $repl | indent 6 }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "helm.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "common.labels" $repl | indent 8 }}
     spec:
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+{{- if .Values.affinity.crossZone }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+{{ include "common.labels" $repl | indent 18 }}
+              topologyKey: kubernetes.io/hostname
+{{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: {{ include "common.name" $ctr }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+{{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+{{- end }}
+{{- if .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+{{- if .Values.resources.requests }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+{{- end -}}
+{{ if .Values.resources.limits }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+{{- end -}}
+{{- end -}}

@@ -1,9 +1,11 @@
+{{- $pd := dict "Values" .Values "Chart" .Chart "Component" "test-pod" }}
+{{- $svc := dict "Values" .Values "Chart" .Chart "Component" "service" }}
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "helm.fullname" . }}-test-connection"
+  name: {{ include "common.name" $pd }}
   labels:
-{{ include "helm.labels" . | indent 4 }}
+{{ include "common.labels" $pd | indent 4 }}
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -11,5 +13,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "helm.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "common.name" $svc }}:{{ .Values.service.testPort }}']
   restartPolicy: Never
