@@ -12,6 +12,6 @@ COPY . .
 
 RUN npm install
 
-RUN ls && pwd
+RUN ls && pwd && cd app && ls -all && pwd
 
 CMD ["npm", "start"]
