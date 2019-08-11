@@ -4,14 +4,22 @@ FROM node:10.15.1-alpine
 # Set Maintainer.
 LABEL maintainer "Jayagopal Narayanaswamy"
 
+RUN ls && pwd
+
 # Prepare Image.
 RUN mkdir /app
 WORKDIR /app
 
-COPY . .
+COPY package.json ./
 
 RUN npm install
 
-RUN ls && pwd && cd app && ls -all && pwd
+COPY . .
+
+EXPOSE 3000
+
+RUN ls && pwd
+
+RUN cd /app && ls -all && pwd
 
 CMD ["npm", "start"]
