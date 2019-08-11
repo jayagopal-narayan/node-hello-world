@@ -14,10 +14,12 @@ def helmDeploy(Map args) {
         if (args.dry_run) {
             println "Running dry-run deployment"
 
-            sh "helm install --dry-run --debug -n ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version} --tiller-namespace=${args.namespace} --namespace=${args.namespace}"
+            // sh "helm install --dry-run --debug -n ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version} --tiller-namespace=${args.namespace} --namespace=${args.namespace}"
+
+            sh "helm install --dry-run --debug -n ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version} --namespace=${args.namespace}"
         } else {
             println "Running deployment"
-            sh "helm upgrade --install ${args.name} ${args.chart_dir} --set image.tag=${args.tag},version=${args.version}"
+            sh "helm upgrade --install ${args.name} ${args.chart_dir} --set image.tag=${args.tag}"
 
             echo "Application ${args.name} successfully deployed. Use helm status ${args.name} to check."
         }
@@ -55,6 +57,7 @@ node {
             docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
                 app.push('v1')
+                app.push('latest')
             }
         }
 
@@ -66,7 +69,7 @@ node {
             helmLint(
                 chart_dir     : 'helm-v1',
                 chart_version : 'development',
-                tag           : 'v1'
+                tag           : 'latest'
             )
 
             // Deploy using Helm chart
@@ -74,7 +77,7 @@ node {
                 dry_run       : false,
                 name          : 'hello-world',
                 chart_dir     : 'helm-v1',
-                tag           : 'v1',
+                tag           : 'latest',
                 version       : 'development',
                 namespace     : 'development'
             )
