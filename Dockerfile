@@ -20,6 +20,6 @@ EXPOSE 3000
 
 RUN ls && pwd
 
-RUN cd /app && ls -all && pwd
+RUN ls && cd /app && ls -all && pwd
 
 CMD ["npm", "start"]
