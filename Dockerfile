@@ -8,11 +8,13 @@ LABEL maintainer "Jayagopal Narayanaswamy"
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json ./
+COPY . .
+
+RUN ls -all && pwd
 
 RUN npm install
 
-COPY . .
+RUN ls -all && pwd
 
 EXPOSE 3000
 
