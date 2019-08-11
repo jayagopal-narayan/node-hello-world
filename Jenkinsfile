@@ -67,7 +67,7 @@ node {
 
             // Run helm chart linter
             helmLint(
-                chart_dir     : 'helm-v1',
+                chart_dir     : 'upload-service',
                 chart_version : 'development',
                 tag           : 'latest'
             )
@@ -76,7 +76,7 @@ node {
             helmDeploy(
                 dry_run       : false,
                 name          : 'hello-world',
-                chart_dir     : 'helm-v1',
+                chart_dir     : 'upload-service',
                 tag           : 'latest',
                 version       : 'development',
                 namespace     : 'development'
