@@ -14,10 +14,10 @@
 
 #CMD ["npm", "start"]
 
-from node:8
+From node:8
 
 # Create app directory
-WORKDIR /usr/node/app
+WORKDIR /app
 
 COPY package*.json ./
 
