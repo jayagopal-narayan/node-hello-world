@@ -60,7 +60,6 @@ node {
             docker.withRegistry('https://711317688399.dkr.ecr.us-west-1.amazonaws.com', 'ecr:us-west-1:aws-agira-jayagopal') {
 
                 app.push('v1')
-                app.push('latest')
             }
         }
 
@@ -72,7 +71,7 @@ node {
             helmLint(
                 chart_dir     : 'hello',
                 chart_version : 'development',
-                tag           : 'latest'
+                tag           : 'v1'
             )
 
             // Deploy using Helm chart
@@ -80,7 +79,7 @@ node {
                 dry_run       : false,
                 name          : 'hello-world',
                 chart_dir     : 'hello',
-                tag           : 'latest',
+                tag           : 'v1',
                 version       : 'development',
                 namespace     : 'development'
             )

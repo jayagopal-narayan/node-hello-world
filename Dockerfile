@@ -4,8 +4,6 @@ FROM node:10.15.1-alpine
 # Set Maintainer.
 LABEL maintainer "Jayagopal Narayanaswamy"
 
-RUN ls && pwd
-
 # Prepare Image.
 RUN mkdir /app
 WORKDIR /app
