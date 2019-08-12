@@ -1,5 +1,5 @@
 # Use a Node JS Base Image.
-#FROM node:10.15.1-alpine
+FROM node:10.15.1-alpine
 
 # Set Maintainer.
 #LABEL maintainer "Jayagopal Narayanaswamy"
@@ -20,7 +20,7 @@
 
 #CMD ["npm", "start"]
 
-From node:8
+#From node:8
 # Create app directory
 
 WORKDIR /app
