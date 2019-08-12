@@ -4,12 +4,12 @@
 
 replicaCount: 1
 
-app: hello-world
+app: intermx-services
 context: upload
 
 image:
   repository: 711317688399.dkr.ecr.us-west-1.amazonaws.com/hello-world
-  tag: 0.1.0
+  tag: "v1"
   pullPolicy: Always
 
 service:

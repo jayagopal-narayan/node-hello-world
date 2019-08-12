@@ -5,23 +5,17 @@
 replicaCount: 1
 
 image:
-  repository: 711317688399.dkr.ecr.us-west-1.amazonaws.com/hello-world
-  tag: "v1"
-  pullPolicy: Always
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-# service:
-#   type: ClusterIP
-#   port: 80
-
 service:
-  type: NodePort
-  exposePort: 30000
-  targetPort: 4000
-  internalPort: 3000
+  type: ClusterIP
+  port: 80
 
 ingress:
   enabled: false
