@@ -68,7 +68,7 @@ node {
             sh 'ls -all && pwd'
 
             // Run helm chart linter
-            helmLint(
+            /* helmLint(
                 chart_dir     : 'hello',
                 chart_version : 'development',
                 tag           : 'v1'
@@ -82,7 +82,7 @@ node {
                 tag           : 'v1',
                 version       : 'development',
                 namespace     : 'development'
-            )
+            ) */
         }
     }
 

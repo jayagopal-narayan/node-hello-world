@@ -1,23 +1,27 @@
-# Default values for hello.
+# Default values for helm-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
-  # repository: 711317688399.dkr.ecr.us-west-1.amazonaws.com/hello-world
-  # tag: latest
+  repository: 711317688399.dkr.ecr.us-west-1.amazonaws.com/hello-world
+  tag: "v1"
   pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# service:
+#   type: ClusterIP
+#   port: 80
+
 service:
-  type: LoadBalancer
-  port: 80
+  type: NodePort
+  exposePort: 30000
+  targetPort: 4000
+  internalPort: 3000
 
 ingress:
   enabled: false
